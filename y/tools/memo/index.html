@@ -24,11 +24,24 @@
     <p><button id="save">保存</button> <span id="last" class="note"></span></p>
     <p class="note">本番の共有データ（GAS）でも、保存するときに利用者名を添えて「誰が更新したか」を残す想定です。</p>
   </div>
-  <p><a class="btn sub" href="../../portal/" target="_blank">ポータルを開く</a></p>
+  <p><button class="sub" onclick="goPortal()">ポータルに戻る</button> <span class="note" id="portalMsg"></span></p>
+<script>
+// ポータルに戻る：①このツールを開いたポータル ②名前で探したポータル の順に探して前に出す。
+// どちらも無ければ、新しい窓は開かずに案内を出す（同じポータルが複数開くのを防ぐ）。
+function goPortal() {
+  var msg = document.getElementById('portalMsg');
+  try {
+    if (window.opener && !window.opener.closed && window.opener.name === 'sanei-portal') {
+      window.opener.focus(); msg.textContent = '（ポータルの窓を前に出しました。出てこない場合はタスクバーのポータルを押してください）'; return;
+    }
+  } catch (e) {}
+  msg.textContent = 'タスクバーまたはデスクトップの「ポータルY」（紫のP）から戻ってください。';
+}
+</script>
   <div class="diag" id="diag"></div>
 </main>
 <script>
-var VERSION = 'v3';
+var VERSION = 'v4';
 var TOOL_ID = 'memo';
 document.getElementById('ver').textContent = VERSION;
 var mk = TOOL_ID + '.data';

@@ -3,6 +3,8 @@
  */
 (function () {
   var P = window.PORTAL;
+  // この窓に名前を付ける（ツールの「ポータルに戻る」で、この窓を探して前に出すため）
+  try { window.name = 'sanei-portal'; } catch (e) {}
   var USERS = [
     { name: 'テスト太郎', group: 'DX' },
     { name: 'テスト花子', group: '一般' },
@@ -43,17 +45,23 @@
     $('tools').innerHTML = P.tools.filter(function (t) { return !t.groups.length || t.groups.indexOf(g) >= 0; }).map(function (t) {
       var abs = new URL(t.url, location.href).href;
       return '<div class="card tool"><img src="' + t.icon + '" alt=""><div><div class="t">' + t.name + '</div><div class="d">' + t.desc + '</div>' +
-        '<button data-open="' + t.url + '">開く(A)</button>' +
-        '<button class="sub" data-popup="' + t.url + '">開く(B)</button>' +
+        '<button data-popup="' + t.url + '" data-id="' + t.id + '">開く</button>' +
         '<button class="sub" data-copy="' + abs + '">URLをコピー</button></div></div>';
     }).join('');
   }
   $('tools').addEventListener('click', function (e) {
     var d = e.target.dataset;
-    if (d.open) window.open(d.open, '_blank');
-    if (d.popup) window.open(d.popup, '_blank', 'popup,width=1100,height=780');
+    if (d.popup) openTool(d.popup, d.id);
     if (d.copy) { copyText(d.copy); e.target.textContent = 'コピーしました'; }
   });
+
+  // ツールを開く。同じツールの窓がすでに開いていれば、新しく開かずにその窓を前に出す。
+  var opened = {};
+  function openTool(url, id) {
+    var w = opened[id];
+    if (w && !w.closed) { try { w.focus(); return; } catch (e) {} }
+    opened[id] = window.open(url, 'sanei-tool-' + id, 'popup,width=1100,height=780');
+  }
 
   var sel = $('userSel');
   sel.innerHTML = USERS.map(function (u, i) { return '<option value="' + i + '">' + u.name + '（' + u.group + '）</option>'; }).join('');
