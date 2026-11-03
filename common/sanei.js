@@ -65,6 +65,26 @@
     }
   };
 
+  // 共通のインストールボタン：Chromeが「インストールできる」と判断したときだけ右下に出す。
+  // ページに自前のボタン（id="installBtn"）があるツール・ポータルでは出さない。
+  // ポータルの小窓（アドレスバーが無くChromeのインストールマークが出ない窓）でもインストールできるようにするため。
+  var deferredInstall = null;
+  addEventListener('beforeinstallprompt', function (e) {
+    if (document.getElementById('installBtn')) return;
+    e.preventDefault(); deferredInstall = e;
+    function show() {
+      if (document.getElementById('saneiInstallBtn')) return;
+      var b = document.createElement('button');
+      b.id = 'saneiInstallBtn'; b.type = 'button'; b.textContent = 'このツールをインストール';
+      b.setAttribute('style', 'position:fixed;right:16px;bottom:16px;z-index:2147483647;padding:8px 14px;border-radius:999px;' +
+        'border:1px solid #fff;background:#1f4e8c;color:#fff;font:14px "Yu Gothic UI","Meiryo",sans-serif;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.35)');
+      b.onclick = function () { if (deferredInstall) { deferredInstall.prompt(); deferredInstall = null; } b.remove(); };
+      document.body.appendChild(b);
+    }
+    if (document.body) show(); else addEventListener('DOMContentLoaded', show);
+  });
+  addEventListener('appinstalled', function () { var b = document.getElementById('saneiInstallBtn'); if (b) b.remove(); });
+
   // サービスワーカー（インストールに必要）。置き場の一番上に1つだけ。
   if ('serviceWorker' in navigator) {
     var base = document.currentScript.src.replace(/common\/sanei\.js.*$/, '');
