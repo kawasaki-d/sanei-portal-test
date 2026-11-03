@@ -1,0 +1,22 @@
+{
+  "id": "sanei-test/y-viewer360",
+  "name": "360°Viewer（試作）",
+  "short_name": "360°Viewer",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#222222",
+  "theme_color": "#222222",
+  "icons": [
+    {
+      "src": "../../../icons/viewer360-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "../../../icons/viewer360-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
