@@ -3,17 +3,17 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ポータル試作 第2版</title>
+<title>ポータル試作 第3版</title>
 <link rel="icon" href="icons/portal-192.png">
 <link rel="stylesheet" href="common/style.css">
 <script src="common/sanei.js"></script>
 </head>
 <body>
-<header><h1>ポータル試作 第2版（方式の比較）</h1></header>
+<header><h1>ポータル試作 第3版（方式の比較）</h1></header>
 <main>
   <div class="card">
     <h2>はじめに</h2>
-    <p>第1版でインストールした試作アプリ（「サンエイツール（試作）」「テスト計算（試作）」など）は、先にすべてアンインストールしてください。</p>
+    <p><b>第2版でインストールした「ポータルX（試作）」を、先にアンインストールしてください。</b>第2版までは全アプリのIDが同じになっていたため、残っていると第3版の確認が正しくできません。</p>
     <p class="note">アンインストールは、アプリのウィンドウ右上の「︙」→「…をアンインストール」、または Chrome で chrome://apps を開き、アイコンを右クリック →「Chromeから削除」。</p>
   </div>
   <div class="card">
@@ -26,7 +26,12 @@
     <p>ポータルもツールもそれぞれ別のアプリ。ツールはインストールしなくてもポータルから使え、お気に入りだけ単体でインストールして専用アイコンにする。</p>
     <a class="btn" href="y/portal/">ポータルYを開く</a>
   </div>
-  <p class="note">X・Yは同じ置き場にあるので、名前や設定は両方で共通です。どちらから試しても構いません。</p>
+  <div class="card">
+    <h2>Z方式：ツールはポータルの中に置き、ツールも単独インストールできる</h2>
+    <p>X方式の「右クリックでツールを選べる」と、Y方式の「ツールごとの専用アイコン」を両立できるかを確かめる。</p>
+    <a class="btn" href="z/">ポータルZを開く</a>
+  </div>
+  <p class="note">X・Y・Zは同じ置き場にあるので、名前や設定は両方で共通です。どちらから試しても構いません。</p>
   <div class="diag" id="diag"></div>
 </main>
 <script>Sanei.renderDiag(document.getElementById('diag'));</script>

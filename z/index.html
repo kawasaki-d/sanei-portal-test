@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ポータルZ（試作）</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="../icons/portal-192.png">
+<meta name="theme-color" content="#b4235a">
+<link rel="stylesheet" href="../common/style.css">
+<script src="../common/sanei.js"></script>
+<style>header{background:#b4235a}</style>
+</head>
+<body>
+<header>
+  <h1>ポータルZ <span class="ver" id="ver"></span></h1>
+  <button class="chip" id="installBtn" hidden>このポータルをインストール</button>
+  <button class="chip" id="userChip">名前を選ぶ</button>
+</header>
+<main>
+  <div class="flash" id="flash" hidden></div>
+  <div class="card"><b>Z方式：ツールはポータルの中に置き、ツールも単独インストールできる</b><p class="note">右クリックでツールを選べるポータルと、ツールごとの専用アイコンが両立できるかを確認します。</p></div>
+  <div class="card">
+    <h2>ツール</h2>
+    <div class="tools" id="tools"></div>
+    <p class="note">開く(A)＝新しいウィンドウ、開く(B)＝ポップアップウィンドウ（アドレスバーやタブの無い小さな窓）で開きます。</p>
+  </div>
+  <div class="card">
+    <h2>設定リンク（接続先の一括登録）</h2>
+    <p><a id="confLink" href="#">設定リンクを開く（架空の接続先を登録）</a></p>
+    <button class="sub" id="clearConf">接続先設定を消す（テスト用）</button>
+    <button class="sub" id="clearUser">名前を消す（テスト用）</button>
+  </div>
+  <div class="card">
+    <h2>確認チェックリスト（Z方式）</h2>
+    <p class="note">結果はこのPCのChromeに保存されます。最後に「結果をまとめてコピー」を押して、Claudeとのチャットに貼り付けてください。</p>
+    <table class="check" id="check"></table>
+    <p><button id="copyResults">結果をまとめてコピー</button> <span class="note" id="copied"></span></p>
+  </div>
+  <div class="diag" id="diag"></div>
+</main>
+<div class="modal" id="modal" hidden>
+  <div class="box">
+    <b>あなたは誰ですか？</b>
+    <p class="note">選んだ名前は、このPCのChromeに保存され、すべてのツールで使われます（架空の名前です）。</p>
+    <select id="userSel"></select>
+    <button id="userOk">決定</button>
+  </div>
+</div>
+<script>
+window.PORTAL = {"label": "Z方式", "version": "v3", "tools": [{"id": "calc", "name": "テスト計算", "desc": "小数の桁数設定を保存する（保存の共有を確認する用）", "url": "tools/calc/", "icon": "../icons/calc-192.png", "groups": []}, {"id": "memo", "name": "テストメモ", "desc": "誰がいつ更新したかを記録する", "url": "tools/memo/", "icon": "../icons/memo-192.png", "groups": []}, {"id": "dxonly", "name": "DX専用（表示切替の確認）", "desc": "DXグループの人にだけ表示", "url": "tools/calc/", "icon": "../icons/calc-192.png", "groups": ["DX"]}], "checks": [["Z1", "ポータルZ（赤のP）をインストールできた"], ["Z2", "ポータルZから開いた(A)テスト計算の表示モード、窓のタイトル"], ["Z3", "テスト計算の画面の「このツールを単独でインストール」（またはアドレスバー右のマーク）で、テスト計算を単独インストールできた"], ["Z4", "単独インストール後、ポータルZから開いた(A)ときにどの窓で開いたか（テスト計算アプリ／ポータルZアプリ／Chromeのタブ）"], ["Z5", "タスクバーで、ポータルZとテスト計算が別々のアイコンで並ぶ"], ["Z6", "タスクバーのポータルZのアイコンを右クリックすると、テスト計算・テストメモが出る。選んだときどの窓で開いたか"], ["Z7", "どの操作でも「ロゴと名前の更新」「アップデートをご利用いただけます」が出ない"], ["Z8", "名前と小数桁数の設定が、どこから開いても同じ"]], "resultsKey": "portaltest3.z"};
+</script>
+<script src="../common/portal.js"></script>
+</body>
+</html>
