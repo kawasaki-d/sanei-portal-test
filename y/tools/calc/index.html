@@ -52,8 +52,9 @@ function goPortal() {
   <div class="diag" id="diag"></div>
 </main>
 <script>
-var VERSION = 'v4';
+var VERSION = 'v5';
 var TOOL_ID = 'calc';
+Sanei.trackInstall(TOOL_ID);
 document.getElementById('ver').textContent = VERSION;
 var dk = TOOL_ID + '.digits';
 var dsel = document.getElementById('digits');

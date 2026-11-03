@@ -41,8 +41,9 @@ function goPortal() {
   <div class="diag" id="diag"></div>
 </main>
 <script>
-var VERSION = 'v4';
+var VERSION = 'v5';
 var TOOL_ID = 'memo';
+Sanei.trackInstall(TOOL_ID);
 document.getElementById('ver').textContent = VERSION;
 var mk = TOOL_ID + '.data';
 function load() { try { return JSON.parse(localStorage.getItem(mk)) || {}; } catch (e) { return {}; } }

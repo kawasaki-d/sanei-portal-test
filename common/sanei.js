@@ -39,6 +39,16 @@
     onChange: function (fn) {
       addEventListener('storage', function (e) { if (!e.key || e.key.indexOf('sanei.') === 0) fn(); });
     },
+    // インストール済みの記録（ツール側で呼ぶ）。
+    // 自分専用のアプリ窓（standalone かつ ポータルから開かれていない）で動いていれば、インストール済みとみなす。
+    trackInstall: function (toolId) {
+      var k = 'sanei.installed.' + toolId;
+      function mark() { try { localStorage.setItem(k, '1'); } catch (e) {} }
+      if (displayMode().indexOf('standalone') >= 0 && !window.opener) mark();
+      addEventListener('appinstalled', mark);
+    },
+    isInstalled: function (toolId) { try { return localStorage.getItem('sanei.installed.' + toolId) === '1'; } catch (e) { return false; } },
+    clearInstalled: function () { try { Object.keys(localStorage).forEach(function (k) { if (k.indexOf('sanei.installed.') === 0) localStorage.removeItem(k); }); } catch (e) {} },
     // 診断パネル（試作の検証用）
     renderDiag: function (el, extra) {
       var u = read(K_USER), c = read(K_CONF);

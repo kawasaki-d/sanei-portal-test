@@ -44,7 +44,7 @@
     var u = Sanei.getUser(), g = u ? u.group : null;
     $('tools').innerHTML = P.tools.filter(function (t) { return !t.groups.length || t.groups.indexOf(g) >= 0; }).map(function (t) {
       var abs = new URL(t.url, location.href).href;
-      return '<div class="card tool"><img src="' + t.icon + '" alt=""><div><div class="t">' + t.name + '</div><div class="d">' + t.desc + '</div>' +
+      return '<div class="card tool"><img src="' + t.icon + '" alt=""><div><div class="t">' + t.name + (Sanei.isInstalled(t.id) ? ' <span class="note">（インストール済み）</span>' : '') + '</div><div class="d">' + t.desc + '</div>' +
         '<button data-popup="' + t.url + '" data-id="' + t.id + '">開く</button>' +
         '<button class="sub" data-copy="' + abs + '">URLをコピー</button></div></div>';
     }).join('');
@@ -58,9 +58,15 @@
   // ツールを開く。同じツールの窓がすでに開いていれば、新しく開かずにその窓を前に出す。
   var opened = {};
   function openTool(url, id) {
-    var w = opened[id];
-    if (w && !w.closed) { try { w.focus(); return; } catch (e) {} }
-    opened[id] = window.open(url, 'sanei-tool-' + id, 'popup,width=1100,height=780');
+    var t = P.tools.filter(function (x) { return x.id === id; })[0] || {};
+    if (t.external || Sanei.isInstalled(id)) {
+      // インストール済み：普通のリンクとして開く（Chromeがそのアプリの窓で開くことを期待）
+      var a = document.createElement('a'); a.href = url; a.target = '_blank'; a.rel = 'noopener';
+      document.body.appendChild(a); a.click(); a.remove();
+      return;
+    }
+    // 未インストール：アドレスバーの無いポップアップ窓で開く
+    window.open(url, '_blank', 'popup,width=1100,height=780');
   }
 
   var sel = $('userSel');
@@ -73,6 +79,7 @@
   $('confLink').onclick = function () { setTimeout(function () { location.reload(); }, 50); };
   $('clearConf').onclick = function () { Sanei.clearConfig(); refresh(); };
   $('clearUser').onclick = function () { Sanei.clearUser(); refresh(); };
+  if ($('clearInst')) $('clearInst').onclick = function () { Sanei.clearInstalled(); refresh(); };
 
   var deferred = null;
   addEventListener('beforeinstallprompt', function (e) { e.preventDefault(); deferred = e; $('installBtn').hidden = false; });
