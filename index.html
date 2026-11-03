@@ -3,156 +3,32 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>サンエイツール（試作）</title>
-<link rel="manifest" href="manifest.webmanifest">
+<title>ポータル試作 第2版</title>
 <link rel="icon" href="icons/portal-192.png">
-<meta name="theme-color" content="#1f4e8c">
 <link rel="stylesheet" href="common/style.css">
 <script src="common/sanei.js"></script>
-<script src="tools.js"></script>
 </head>
 <body>
-<header>
-  <h1>サンエイツール <span class="ver" id="ver"></span></h1>
-  <button class="chip" id="installBtn" hidden>このポータルをインストール</button>
-  <button class="chip" id="userChip">名前を選ぶ</button>
-</header>
+<header><h1>ポータル試作 第2版（方式の比較）</h1></header>
 <main>
-  <div class="flash" id="flash" hidden></div>
-
   <div class="card">
-    <h2>ツール</h2>
-    <div class="tools" id="tools"></div>
-    <p class="note">「開く(A)」と「開く(B)」は開き方の違いを確かめるためのボタンです（Aは新しいウィンドウを指定、Bは通常のリンク）。</p>
+    <h2>はじめに</h2>
+    <p>第1版でインストールした試作アプリ（「サンエイツール（試作）」「テスト計算（試作）」など）は、先にすべてアンインストールしてください。</p>
+    <p class="note">アンインストールは、アプリのウィンドウ右上の「︙」→「…をアンインストール」、または Chrome で chrome://apps を開き、アイコンを右クリック →「Chromeから削除」。</p>
   </div>
-
   <div class="card">
-    <h2>設定リンク（接続先の一括登録）</h2>
-    <p class="note">本番では、全ツール分のGASのURLを入れたリンクを社内チャットで1本だけ配る想定です。ここでは架空の接続先で試します。</p>
-    <p><a id="confLink" href="#">設定リンクを開く（架空の接続先を登録）</a></p>
-    <button class="sub" id="clearConf">接続先設定を消す（テスト用）</button>
-    <button class="sub" id="clearUser">名前を消す（テスト用）</button>
+    <h2>X方式：ツールはポータルの中に置く</h2>
+    <p>インストールはポータル1つだけ。ツールはポータルアプリの一部として開く。タスクバーのアイコンはポータル1つにまとまり、右クリックでツールを選ぶ。</p>
+    <a class="btn" href="x/">ポータルXを開く</a>
   </div>
-
   <div class="card">
-    <h2>確認チェックリスト</h2>
-    <p class="note">結果はこのPCのChromeに保存されます。最後に「結果をまとめてコピー」を押して、Claudeとのチャットに貼り付けてください。</p>
-    <table class="check" id="check"></table>
-    <p><button id="copyResults">結果をまとめてコピー</button> <span class="note" id="copied"></span></p>
+    <h2>Y方式：ポータルとツールを並べて置く</h2>
+    <p>ポータルもツールもそれぞれ別のアプリ。ツールはインストールしなくてもポータルから使え、お気に入りだけ単体でインストールして専用アイコンにする。</p>
+    <a class="btn" href="y/portal/">ポータルYを開く</a>
   </div>
-
+  <p class="note">X・Yは同じ置き場にあるので、名前や設定は両方で共通です。どちらから試しても構いません。</p>
   <div class="diag" id="diag"></div>
 </main>
-
-<div class="modal" id="modal" hidden>
-  <div class="box">
-    <b>あなたは誰ですか？</b>
-    <p class="note">選んだ名前は、このPCのChromeに保存され、すべてのツールで使われます（試作のため架空の名前です）。</p>
-    <select id="userSel"></select>
-    <button id="userOk">決定</button>
-  </div>
-</div>
-
-<script>
-var VERSION = 'v1';   // 更新反映の確認（チェック項目14）で、GitHub上でここを v2 に書き換える
-document.getElementById('ver').textContent = VERSION;
-
-var CHECKS = [
-  ['1', 'Chromeでこのページを開き、アドレスバー右のインストールマークから「ポータル」をインストールできた'],
-  ['2', 'デスクトップ（またはスタートメニュー）にポータルのアイコンができた'],
-  ['3', '名前を選んだあと、ポータルを閉じてアイコンから開き直しても、名前が残っている'],
-  ['4', '「設定リンクを開く」を押すと、診断情報の接続先設定が「登録済み」になる。アイコンから開き直しても残る'],
-  ['5', 'インストールしたポータルから「開く(A)」でテスト計算を開くと、どう開いたか（ツール画面の診断情報「表示モード」をメモ欄に）'],
-  ['6', '同じく「開く(B)」で開くと、どう開いたか（表示モードをメモ欄に）'],
-  ['7', 'ツール側に、ポータルで選んだ名前が表示されている'],
-  ['8', 'テスト計算で小数の桁数を変えて閉じ、ポータルから開き直しても、設定が残っている'],
-  ['9', 'テストメモで保存すると「最終更新：名前と時刻」が記録される'],
-  ['10', 'ポータルをインストールした状態で、テスト計算をChromeの通常タブで開き（「単独インストール用URLをコピー」→Chromeに貼り付け）、テスト計算だけを別アプリとしてインストールできた'],
-  ['11', '単独インストールしたテスト計算のアイコンから開くと、名前・設定がポータルと同じ'],
-  ['12', '単独インストール後、ポータルの「開く(A)」で開くと、どのウィンドウで開いたか（テスト計算アプリ／ポータルアプリ／Chromeのタブ）'],
-  ['13', 'タスクバーで、ポータルとテスト計算が別々のアイコンとして表示され、それぞれピン留めできる'],
-  ['14', 'タスクバーのポータルのアイコンを右クリックすると「テスト計算」「テストメモ」が一覧に出る'],
-  ['15', 'GitHub上でindex.htmlの VERSION を v2 に書き換えて数分後、ポータルを開き直すと v2 と表示される（何回開き直したか・何分かかったかをメモ欄に）'],
-  ['16', '他のメンバーのPC1台でも、1〜4が同じようにできた']
-];
-var RKEY = 'portaltest.results';
-function loadR() { try { return JSON.parse(localStorage.getItem(RKEY)) || {}; } catch (e) { return {}; } }
-function saveR(r) { try { localStorage.setItem(RKEY, JSON.stringify(r)); } catch (e) {} }
-
-function renderChecks() {
-  var r = loadR(), t = document.getElementById('check');
-  t.innerHTML = '<tr><th>No.</th><th>確認内容</th><th>結果</th><th>メモ</th></tr>' + CHECKS.map(function (c) {
-    var v = r[c[0]] || {};
-    function opt(x) { return '<option' + (v.res === x ? ' selected' : '') + '>' + x + '</option>'; }
-    return '<tr><td>' + c[0] + '</td><td>' + c[1] + '</td><td><select data-k="' + c[0] + '" data-f="res">' +
-      opt('') + opt('OK') + opt('NG') + opt('一部') + '</select></td><td><input type="text" data-k="' + c[0] +
-      '" data-f="memo" value="' + (v.memo || '').replace(/"/g, '&quot;') + '"></td></tr>';
-  }).join('');
-}
-document.getElementById('check').addEventListener('change', function (e) {
-  var k = e.target.dataset.k, f = e.target.dataset.f; if (!k) return;
-  var r = loadR(); r[k] = r[k] || {}; r[k][f] = e.target.value; saveR(r);
-});
-document.getElementById('copyResults').onclick = function () {
-  var r = loadR();
-  var txt = '【ポータル試作 確認結果】' + VERSION + ' / ' + navigator.userAgent.match(/Chrome\/[\d.]+/) + '\n' +
-    CHECKS.map(function (c) { var v = r[c[0]] || {}; return c[0] + '. ' + (v.res || '未') + (v.memo ? '（' + v.memo + '）' : ''); }).join('\n');
-  copyText(txt); document.getElementById('copied').textContent = 'コピーしました';
-};
-
-function copyText(t) {
-  if (navigator.clipboard && window.isSecureContext) { navigator.clipboard.writeText(t).catch(function () { fallback(t); }); }
-  else fallback(t);
-  function fallback(s) { var a = document.createElement('textarea'); a.value = s; document.body.appendChild(a); a.select(); document.execCommand('copy'); a.remove(); }
-}
-
-function renderTools() {
-  var u = Sanei.getUser(), g = u ? u.group : null, box = document.getElementById('tools');
-  box.innerHTML = SANEI_TOOLS.filter(function (t) { return !t.groups.length || t.groups.indexOf(g) >= 0; }).map(function (t) {
-    var abs = new URL(t.url, location.href).href;
-    return '<div class="card tool"><img src="' + t.icon + '" alt=""><div><div class="t">' + t.name + '</div><div class="d">' + t.desc + '</div>' +
-      '<button data-open="' + t.url + '">開く(A)</button>' +
-      '<a class="btn sub" href="' + t.url + '" target="_blank">開く(B)</a>' +
-      '<button class="sub" data-copy="' + abs + '">単独インストール用URLをコピー</button></div></div>';
-  }).join('');
-}
-document.getElementById('tools').addEventListener('click', function (e) {
-  var o = e.target.dataset.open, c = e.target.dataset.copy;
-  if (o) window.open(o, '_blank');
-  if (c) { copyText(c); e.target.textContent = 'コピーしました'; }
-});
-
-// 名前選択
-var sel = document.getElementById('userSel');
-sel.innerHTML = SANEI_USERS.map(function (u, i) { return '<option value="' + i + '">' + u.name + '（' + u.group + '）</option>'; }).join('');
-document.getElementById('userChip').onclick = function () { document.getElementById('modal').hidden = false; };
-document.getElementById('userOk').onclick = function () {
-  Sanei.setUser(SANEI_USERS[sel.value]); document.getElementById('modal').hidden = true; refresh();
-};
-
-// 設定リンク（架空の接続先）
-var demoConf = { tools: { calc: { endpoint: 'https://example.invalid/calc-gas' }, memo: { endpoint: 'https://example.invalid/memo-gas' } } };
-document.getElementById('confLink').href = location.pathname + '#config=' + encodeURIComponent(JSON.stringify(demoConf));
-document.getElementById('confLink').onclick = function () { setTimeout(function () { location.reload(); }, 50); };
-document.getElementById('clearConf').onclick = function () { Sanei.clearConfig(); refresh(); };
-document.getElementById('clearUser').onclick = function () { Sanei.clearUser(); refresh(); };
-
-// インストールボタン（Chromeがインストール可能と判断したときだけ表示）
-var deferred = null;
-addEventListener('beforeinstallprompt', function (e) { e.preventDefault(); deferred = e; document.getElementById('installBtn').hidden = false; });
-document.getElementById('installBtn').onclick = function () { if (deferred) { deferred.prompt(); deferred = null; } };
-
-function refresh() {
-  var u = Sanei.getUser();
-  document.getElementById('userChip').textContent = u ? u.name + '（名前を変える）' : '名前を選ぶ';
-  if (!u) document.getElementById('modal').hidden = false;
-  renderTools();
-  Sanei.renderDiag(document.getElementById('diag'), [['版', VERSION]]);
-}
-if (window.__saneiConfigJustSaved) { var f = document.getElementById('flash'); f.hidden = false; f.textContent = '接続先設定を登録しました。'; }
-Sanei.onChange(refresh);
-renderChecks();
-refresh();
-</script>
+<script>Sanei.renderDiag(document.getElementById('diag'));</script>
 </body>
 </html>

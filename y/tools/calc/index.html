@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>テスト計算（Y方式）</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="../../../icons/calc-192.png">
+<meta name="theme-color" content="#1b8a5a">
+<link rel="stylesheet" href="../../../common/style.css">
+<script src="../../../common/sanei.js"></script>
+<style>header{background:#1b8a5a}</style>
+</head>
+<body>
+<header>
+  <h1>テスト計算 <span class="ver" id="ver"></span></h1>
+  <button class="chip" id="installBtn" hidden>このツールを単独でインストール</button>
+  <span class="chip" id="who"></span>
+</header>
+<main>
+  <div class="card">
+    <h2>計算</h2>
+    <p>
+      <input id="a" type="number" value="1.5" style="width:90px"> ×
+      <input id="b" type="number" value="2.25" style="width:90px"> ＝
+      <b id="ans"></b>
+    </p>
+    <p>小数の桁数（このツールの設定。保存名 calc.digits）：
+      <select id="digits"><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option></select>
+    </p>
+    <p class="note">この設定を変えて閉じ、ポータルや単独アイコンから開き直したときに残っているかを確認します。</p>
+  </div>
+  <div class="card">
+    <h2>このツールの接続先（設定リンクで登録されたもの）</h2>
+    <p id="endpoint"></p>
+    <p class="note">本番ではここにGASのURLが入り、データの取得・保存に使います。試作では表示するだけです。</p>
+  </div>
+  <p><a class="btn sub" href="../../portal/" target="_blank">ポータルを開く</a></p>
+  <div class="diag" id="diag"></div>
+</main>
+<script>
+var VERSION = 'v2';
+var TOOL_ID = 'calc';
+document.getElementById('ver').textContent = VERSION;
+var dk = TOOL_ID + '.digits';
+var dsel = document.getElementById('digits');
+try { dsel.value = localStorage.getItem(dk) || '2'; } catch (e) { dsel.value = '2'; }
+function calc() {
+  var v = parseFloat(document.getElementById('a').value) * parseFloat(document.getElementById('b').value);
+  document.getElementById('ans').textContent = isFinite(v) ? v.toFixed(+dsel.value) : '—';
+}
+['a', 'b'].forEach(function (id) { document.getElementById(id).oninput = calc; });
+dsel.onchange = function () { try { localStorage.setItem(dk, dsel.value); } catch (e) {} calc(); refresh(); };
+
+var deferred = null;
+addEventListener('beforeinstallprompt', function (e) { e.preventDefault(); deferred = e; document.getElementById('installBtn').hidden = false; });
+document.getElementById('installBtn').onclick = function () { if (deferred) { deferred.prompt(); deferred = null; } };
+
+function refresh() {
+  var u = Sanei.getUser();
+  document.getElementById('who').textContent = u ? '利用者：' + u.name : '利用者：未選択（ポータルで選んでください）';
+  var c = Sanei.getConfig(), ep = c.tools && c.tools[TOOL_ID] && c.tools[TOOL_ID].endpoint;
+  document.getElementById('endpoint').textContent = ep || '未登録（ポータルの「設定リンクを開く」で登録）';
+  try { dsel.value = localStorage.getItem(dk) || dsel.value; } catch (e) {}
+  calc();
+  Sanei.renderDiag(document.getElementById('diag'), [['版', VERSION], ['このツールの設定', '小数 ' + dsel.value + ' 桁']]);
+}
+Sanei.onChange(refresh);
+addEventListener('storage', function (e) { if (e.key === dk) refresh(); });
+refresh();
+</script>
+</body>
+</html>

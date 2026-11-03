@@ -1,0 +1,22 @@
+{
+  "id": "./",
+  "name": "ポータルY（試作）",
+  "short_name": "ポータルY",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f3f5f8",
+  "theme_color": "#5b3a9b",
+  "icons": [
+    {
+      "src": "../../icons/portal-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "../../icons/portal-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

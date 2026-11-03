@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ポータルX（試作）</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="../icons/portal-192.png">
+<meta name="theme-color" content="#0f6e74">
+<link rel="stylesheet" href="../common/style.css">
+<script src="../common/sanei.js"></script>
+<style>header{background:#0f6e74}</style>
+</head>
+<body>
+<header>
+  <h1>ポータルX <span class="ver" id="ver"></span></h1>
+  <button class="chip" id="installBtn" hidden>このポータルをインストール</button>
+  <button class="chip" id="userChip">名前を選ぶ</button>
+</header>
+<main>
+  <div class="flash" id="flash" hidden></div>
+  <div class="card"><b>X方式：ツールはポータルの中（ツール単体のインストールなし）</b><p class="note">ツールはポータルアプリの一部として開きます。タスクバーのアイコンはポータル1つにまとまり、右クリックでツールを選べるかを確認します。</p></div>
+  <div class="card">
+    <h2>ツール</h2>
+    <div class="tools" id="tools"></div>
+    <p class="note">開く(A)＝新しいウィンドウ、開く(B)＝ポップアップウィンドウ（アドレスバーやタブの無い小さな窓）で開きます。</p>
+  </div>
+  <div class="card">
+    <h2>設定リンク（接続先の一括登録）</h2>
+    <p><a id="confLink" href="#">設定リンクを開く（架空の接続先を登録）</a></p>
+    <button class="sub" id="clearConf">接続先設定を消す（テスト用）</button>
+    <button class="sub" id="clearUser">名前を消す（テスト用）</button>
+  </div>
+  <div class="card">
+    <h2>確認チェックリスト（X方式：ツールはポータルの中（ツール単体のインストールなし））</h2>
+    <p class="note">結果はこのPCのChromeに保存されます。最後に「結果をまとめてコピー」を押して、Claudeとのチャットに貼り付けてください。</p>
+    <table class="check" id="check"></table>
+    <p><button id="copyResults">結果をまとめてコピー</button> <span class="note" id="copied"></span></p>
+  </div>
+  <div class="diag" id="diag"></div>
+</main>
+<div class="modal" id="modal" hidden>
+  <div class="box">
+    <b>あなたは誰ですか？</b>
+    <p class="note">選んだ名前は、このPCのChromeに保存され、すべてのツールで使われます（架空の名前です）。</p>
+    <select id="userSel"></select>
+    <button id="userOk">決定</button>
+  </div>
+</div>
+<script>
+window.PORTAL = {"label": "X方式", "version": "v2", "tools": [{"id": "calc", "name": "テスト計算", "desc": "小数の桁数設定を保存する（保存の共有を確認する用）", "url": "tools/calc/", "icon": "../icons/calc-192.png", "groups": []}, {"id": "memo", "name": "テストメモ", "desc": "誰がいつ更新したかを記録する", "url": "tools/memo/", "icon": "../icons/memo-192.png", "groups": []}, {"id": "dxonly", "name": "DX専用（表示切替の確認）", "desc": "DXグループの人にだけ表示", "url": "tools/calc/", "icon": "../icons/calc-192.png", "groups": ["DX"]}], "checks": [["X1", "ポータルX（青緑のP）をインストールできた。デスクトップにアイコンができた"], ["X2", "ポータルXから開いた(A)テスト計算の表示モード（ツール画面の診断情報）"], ["X3", "ポータルXから開いた(B)テスト計算の表示モード"], ["X4", "ツールを開いても「ロゴと名前の更新」の確認画面が出ない"], ["X5", "タスクバーのポータルXのアイコンを右クリックすると「テスト計算」「テストメモ」が出て、選ぶと開く"], ["X6", "ポータルXのアイコンをタスクバーにピン留めできる"], ["X7", "ポータルで選んだ名前と、テスト計算の小数桁数の設定が、ツール側でも同じ"]], "resultsKey": "portaltest2.x"};
+</script>
+<script src="../common/portal.js"></script>
+</body>
+</html>
