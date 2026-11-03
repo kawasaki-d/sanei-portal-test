@@ -14,7 +14,6 @@
 <body>
 <header>
   <h1>テストメモ <span class="ver" id="ver"></span></h1>
-  <button class="chip" id="installBtn" hidden>このツールを単独でインストール</button>
   <span class="chip" id="who"></span>
 </header>
 <main>
@@ -41,7 +40,7 @@ function goPortal() {
   <div class="diag" id="diag"></div>
 </main>
 <script>
-var VERSION = 'v5';
+var VERSION = 'v6';
 var TOOL_ID = 'memo';
 Sanei.trackInstall(TOOL_ID);
 document.getElementById('ver').textContent = VERSION;
@@ -55,9 +54,6 @@ document.getElementById('save').onclick = function () {
   refresh();
 };
 
-var deferred = null;
-addEventListener('beforeinstallprompt', function (e) { e.preventDefault(); deferred = e; document.getElementById('installBtn').hidden = false; });
-document.getElementById('installBtn').onclick = function () { if (deferred) { deferred.prompt(); deferred = null; } };
 
 function refresh() {
   var u = Sanei.getUser(), d = load();

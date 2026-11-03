@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ポータルY（試作）</title>
+<title>ポータルY（試作 v6）</title>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="../../icons/portal-192.png">
 <meta name="theme-color" content="#5b3a9b">
@@ -49,7 +49,7 @@
   </div>
 </div>
 <script>
-window.PORTAL = {"label": "Y方式", "version": "v5", "tools": [{"id": "viewer360", "name": "360°Viewer", "desc": "360°写真を見るツール（実ツール）。フォルダを選んで写真を一覧・閲覧する", "url": "../tools/viewer360/", "icon": "../../icons/viewer360-192.png", "groups": []}, {"id": "aidx", "name": "AI・DX定例会", "desc": "定例会のスケジュール・議事録・資料・メッセージ（作成者のアプリへのリンク。別の置き場）", "url": "https://takagid-creator.github.io/aidx-teireikai/", "icon": "https://takagid-creator.github.io/aidx-teireikai/icon-192.png", "groups": [], "external": true}, {"id": "calc", "name": "テスト計算", "desc": "単独インストールを試す用。小数の桁数設定を保存する", "url": "../tools/calc/", "icon": "../../icons/calc-192.png", "groups": []}, {"id": "memo", "name": "テストメモ", "desc": "インストールせずに使う用。誰がいつ更新したかを記録する", "url": "../tools/memo/", "icon": "../../icons/memo-192.png", "groups": []}, {"id": "dxonly", "name": "DX専用（表示切替の確認）", "desc": "DXグループの人にだけ表示", "url": "../tools/calc/", "icon": "../../icons/calc-192.png", "groups": ["DX"]}], "checks": [["V1", "360°Viewerを単独インストールし、一度そのアイコンから開いた後、ポータルの一覧に「（インストール済み）」と出る"], ["V2", "その状態でポータルから360°Viewerを「開く」と、360°Viewer専用の窓（白い帯なし）で開く"], ["V3", "インストールしていないテストメモは、これまでどおり白い帯付きの窓で開く"], ["V4", "インストール済みのAI・DX定例会をポータルから「開く」と、AI・DX定例会のアプリの窓で開く（開かない場合はどう開いたか）"], ["V5", "インストール済みのツールでは、右上の「このツールを単独でインストール」ボタンが表示されない"]], "resultsKey": "portaltest5.y"};
+window.PORTAL = {"label": "Y方式", "version": "v6", "tools": [{"id": "viewer360", "name": "360°Viewer", "desc": "360°写真を見るツール（実ツール）。フォルダを選んで写真を一覧・閲覧する", "url": "../tools/viewer360/", "icon": "../../icons/viewer360-192.png", "groups": []}, {"id": "aidx", "name": "AI・DX定例会", "desc": "定例会のスケジュール・議事録・資料・メッセージ（作成者のアプリへのリンク。別の置き場）", "url": "https://takagid-creator.github.io/aidx-teireikai/", "icon": "https://takagid-creator.github.io/aidx-teireikai/icon-192.png", "groups": [], "external": true}, {"id": "calc", "name": "テスト計算", "desc": "単独インストールを試す用。小数の桁数設定を保存する", "url": "../tools/calc/", "icon": "../../icons/calc-192.png", "groups": []}, {"id": "memo", "name": "テストメモ", "desc": "インストールせずに使う用。誰がいつ更新したかを記録する", "url": "../tools/memo/", "icon": "../../icons/memo-192.png", "groups": []}, {"id": "dxonly", "name": "DX専用（表示切替の確認）", "desc": "DXグループの人にだけ表示", "url": "../tools/calc/", "icon": "../../icons/calc-192.png", "groups": ["DX"]}], "checks": [["V1", "360°Viewerを単独インストールし、一度そのアイコンから開いた後、ポータルの一覧に「（インストール済み）」と出る"], ["V2", "その状態でポータルから360°Viewerを「開く」と、360°Viewer専用の窓（白い帯なし）で開く"], ["V3", "インストールしていないテストメモは、これまでどおり白い帯付きの窓で開く"], ["V4", "インストール済みのAI・DX定例会をポータルから「開く」と、AI・DX定例会のアプリの窓で開く（開かない場合はどう開いたか）"], ["V5", "インストール済みのツールでは、右上の「このツールを単独でインストール」ボタンが表示されない"]], "resultsKey": "portaltest5.y"};
 </script>
 <script src="../../common/portal.js"></script>
 </body>

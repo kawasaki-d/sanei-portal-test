@@ -14,7 +14,6 @@
 <body>
 <header>
   <h1>テスト計算 <span class="ver" id="ver"></span></h1>
-  <button class="chip" id="installBtn" hidden>このツールを単独でインストール</button>
   <span class="chip" id="who"></span>
 </header>
 <main>
@@ -52,7 +51,7 @@ function goPortal() {
   <div class="diag" id="diag"></div>
 </main>
 <script>
-var VERSION = 'v5';
+var VERSION = 'v6';
 var TOOL_ID = 'calc';
 Sanei.trackInstall(TOOL_ID);
 document.getElementById('ver').textContent = VERSION;
@@ -66,9 +65,6 @@ function calc() {
 ['a', 'b'].forEach(function (id) { document.getElementById(id).oninput = calc; });
 dsel.onchange = function () { try { localStorage.setItem(dk, dsel.value); } catch (e) {} calc(); refresh(); };
 
-var deferred = null;
-addEventListener('beforeinstallprompt', function (e) { e.preventDefault(); deferred = e; document.getElementById('installBtn').hidden = false; });
-document.getElementById('installBtn').onclick = function () { if (deferred) { deferred.prompt(); deferred = null; } };
 
 function refresh() {
   var u = Sanei.getUser();

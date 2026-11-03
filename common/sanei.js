@@ -71,6 +71,8 @@
   var deferredInstall = null;
   addEventListener('beforeinstallprompt', function (e) {
     if (document.getElementById('installBtn')) return;
+    // 自分専用のアプリ窓（＝インストール済み）で動いているときは出さない（押しても何も起きないため）
+    if (displayMode().indexOf('standalone') >= 0 && !window.opener) { e.preventDefault(); return; }
     e.preventDefault(); deferredInstall = e;
     function show() {
       if (document.getElementById('saneiInstallBtn')) return;
